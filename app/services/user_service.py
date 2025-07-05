@@ -11,5 +11,5 @@ class UserService:
             hash_password=get_password(user.password)
         )
 
-        await usuario.save()
-        return usuario
+        await usuario.insert()
+        return usuario.model_dump()

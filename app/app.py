@@ -6,6 +6,8 @@ from contextlib import asynccontextmanager
 from app.models.user_model import User
 from app.api.api_v1.handlers.user import user_router  # Aqui está OK
 
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     client = AsyncIOMotorClient(settings.MONGO_CONNECTION_STRING).todoapp
@@ -17,6 +19,10 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     lifespan=lifespan,
 )
+
+@app.get("/")
+async def root():
+    return {"message": "API está rodando!"}
 
 app.include_router(
     user_router,
