@@ -30,7 +30,7 @@ async def login(data: OAuth2PasswordRequestForm = Depends()) -> Any:
         )
 
     return {
-        "access_token": create_access_token(usuario.id),
+        "access_token": create_access_token (usuario.id),
         "refresh_token": create_refresh_token(usuario.id),
         "token_type": "bearer"
     }

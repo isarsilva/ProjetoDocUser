@@ -6,8 +6,8 @@ class TokenSchema(BaseModel):
     token_type: str
 
 class TokenPayload(BaseModel):
-    sub: UUID = None  
-    exp: int = None  
+    sub: str
+    exp: int   
 
 class TokenSchemaWithRefresh(TokenSchema):
         refresh_token: str

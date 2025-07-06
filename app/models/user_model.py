@@ -1,5 +1,5 @@
+from pydantic import BaseModel, Field, EmailStr, field_serializer
 from beanie import Document, Indexed
-from pydantic import Field, EmailStr
 from bson import ObjectId
 from typing import Optional
 from datetime import datetime
@@ -14,6 +14,10 @@ class User(Document):
     disabled: Optional[bool] = False
 
     model_config = {"arbitrary_types_allowed": True}
+
+    @field_serializer("id")
+    def serialize_id(self, id_value):
+        return str(id_value)
 
     def __repr__(self) -> str:
         return f"<User {self.email}>"

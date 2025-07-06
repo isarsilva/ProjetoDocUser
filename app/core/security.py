@@ -15,21 +15,16 @@ def get_password(password: str) -> str: # para criptografar a senha
 def verify_password(password: str, hashed_password: str) -> bool: # para verificar se a senha é igual a senha criptografada
     return password_context.verify(password, hashed_password)
 
-def create_access_token(subject: Union[str, Any], expires_delta:int =None) -> str:
-    if expires_delta is not None:
-        expires_delta = datetime.utcnow() + expires_delta 
-    else:
-        expires_delta= datetime.utcnow() + timedelta(
-            minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
-        )
+def create_access_token(subject: str, expires_delta: timedelta = timedelta(minutes=15)) -> str:
+    expire = datetime.utcnow() + expires_delta
     info_jwt = {
-      "exp":  expires_delta,
-      "sub": str(subject)
+        "sub": str(subject),
+        "exp": int(expire.timestamp())  # <-- Corrigido aqui!
     }
     jwt_encoded = jwt.encode(
         info_jwt,
         settings.JWT_SECRET_KEY,
-        settings.ALGORITHM
+        algorithm=settings.ALGORITHM
     )
     return jwt_encoded
 def create_refresh_token(subject: Union[str, Any], expires_delta:int =None) -> str:

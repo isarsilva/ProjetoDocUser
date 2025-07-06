@@ -29,5 +29,6 @@ async def adiciona_usuario(data: UserAuth):
 
 @user_router.get("/me", summary="Detalhes do Usuario Logado", response_model=UserDetail)
 async def get_me(user: User = Depends(get_current_user)):
-    return user
+    return UserDetail.model_validate(user.model_dump())
+
    
