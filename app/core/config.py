@@ -4,7 +4,7 @@ from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings  # ✅ Import correto no Pydantic v2
 
 class Settings(BaseSettings):
-    API_V1_STR: str = "/api/v1"
+    API_V1_STR: str = "/v1"
     JWT_SECRET_KEY: str = config("JWT_SECRET_KEY", default="minha_chave_dev", cast=str)
     JWT_REFRESH_SECRET_KEY: str = config("JWT_REFRESH_SECRET_KEY", cast=str)
     MONGO_CONNECTION_STRING: str = config("MONGO_CONNECTION_STRING", cast=str)

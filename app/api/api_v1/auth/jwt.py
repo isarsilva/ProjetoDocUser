@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Body
-from fastapi.security import OAuth2PasswordRequestForm
 from typing import Any
 from app.services.user_service import UserService
 from app.core.security import create_access_token, create_refresh_token
-from app.schemas.auth_schema import TokenSchema,TokenSchemaWithRefresh
+from app.schemas.auth_schema import TokenSchema,TokenSchemaWithRefresh, LoginRequest
 from app.schemas.user_schemas import UserDetail
 from app.models.user_model import User
 from app.api.api_v1.dependencies.user_deps import get_current_user
@@ -17,9 +16,9 @@ from jose import jwt
 jwt_router = APIRouter()
 
 @jwt_router.post("/login", summary='Cria Access Token e Refresh Token', response_model=TokenSchemaWithRefresh)
-async def login(data: OAuth2PasswordRequestForm = Depends()) -> Any:
+async def login(data: LoginRequest) -> Any:
     usuario = await UserService.authenticate_user(
-        email=data.username,
+        email=data.email,
         password=data.password
     )
     
@@ -32,12 +31,8 @@ async def login(data: OAuth2PasswordRequestForm = Depends()) -> Any:
     return {
         "access_token": create_access_token (usuario.id),
         "refresh_token": create_refresh_token(usuario.id),
-        "token_type": "bearer"
+        "token_type": "Bearer"
     }
-
-@jwt_router.post("/test-token", summary='Testando o Token', response_model=UserDetail)
-async def test_token(user: User = Depends(get_current_user)):
-    return user
 
 @jwt_router.post("/refresh-token", summary='Refresh token', response_model=TokenSchema)
 
@@ -65,5 +60,5 @@ async def refresh_token(refresh_token: str = Body(...)):
         )
     return {
         "access_token": create_access_token(user.user_id),
-        "token_type": "bearer"  
+        "token_type": "Bearer"  
     }

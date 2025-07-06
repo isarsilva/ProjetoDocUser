@@ -1,11 +1,11 @@
 from fastapi import FastAPI
+
 from app.core.config import settings
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 from contextlib import asynccontextmanager
 from app.models.user_model import User
 from app.api.api_v1.router import router as api_router
-
 
 
 @asynccontextmanager
@@ -20,12 +20,8 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-
-
 app.include_router(
     api_router,
     prefix=settings.API_V1_STR
 )
 
-    #intalaçao de duas bibliotecas pip install email-validator para validação de email e pip install pydantic[email]
-     # instalar bibliotecas  pip install "python-jose[cryptography]" "passlib[bcrypt]"

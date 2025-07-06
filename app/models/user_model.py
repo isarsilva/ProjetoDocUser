@@ -6,7 +6,6 @@ from datetime import datetime
 
 class User(Document):
     id: Optional[ObjectId] = Field(default_factory=ObjectId, alias="_id")
-    username: str = Indexed(unique=True)
     email: EmailStr = Indexed(unique=True)
     hash_password: str
     first_name: Optional[str] = None

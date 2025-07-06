@@ -8,9 +8,10 @@ from app.api.api_v1.dependencies.user_deps import get_current_user
 
 
 
-user_router = APIRouter(prefix="/users", tags=["users"])
+user_router = APIRouter(tags=["Users"])
 
-@user_router.post("/adiciona", summary="Adiciona um usuário", response_model=UserDetail)
+@Autoware('ADMIN')
+@user_router.post("/register", summary="Adiciona um usuário", response_model=UserDetail)
 async def adiciona_usuario(data: UserAuth):
     try:
         return await UserService.create_user(data)
