@@ -4,7 +4,7 @@ from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 from contextlib import asynccontextmanager
 from app.models.user_model import User
-from app.api.api_v1.handlers.user import user_router  # Aqui está OK
+from app.api.api_v1.router import router as api_router
 
 
 
@@ -20,11 +20,9 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-@app.get("/")
-async def root():
-    return {"message": "API está rodando!"}
+
 
 app.include_router(
-    user_router,
+    api_router,
     prefix=settings.API_V1_STR
 )

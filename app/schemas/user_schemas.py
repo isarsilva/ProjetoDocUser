@@ -7,7 +7,7 @@ class UserAuth(BaseModel):
     password: str = Field(..., min_length=8, max_length=20, description="Senha do Usuário")
 
 class UserDetail(BaseModel):
-    id: UUID
+    id: str
     username: str
     email: EmailStr
     first_name: Optional[str] = None
