@@ -26,3 +26,6 @@ app.include_router(
     api_router,
     prefix=settings.API_V1_STR
 )
+
+    #intalaçao de duas bibliotecas pip install email-validator para validação de email e pip install pydantic[email]
+     # instalar bibliotecas  pip install "python-jose[cryptography]" "passlib[bcrypt]"
