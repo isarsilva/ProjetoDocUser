@@ -20,4 +20,7 @@ class UserDetail(BaseModel):
     last_name: Optional[str] = None         
     disabled: Optional[bool] = False
 
-    #criar uma outra classe para o detalhes do usuario neve vai ter o nome o email e o role 
+    #criar uma outra classe para o detalhes do usuario neve vai ter o nome o email e o role
+class UserMe(BaseModel):
+    username: str
+    email: EmailStr 

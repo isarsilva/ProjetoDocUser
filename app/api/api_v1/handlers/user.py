@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from app.schemas.user_schemas import UserAuth, UserDetail
+from app.schemas.user_schemas import UserAuth, UserDetail, UserMe
 from app.services.user_service import UserService
 import pymongo
 from beanie.exceptions import RevisionIdWasChanged 
@@ -73,8 +73,8 @@ async def apaga_usuario(user_id: str, user: User = Depends(get_current_user)):
             detail=f"Erro ao deletar usuário: {str(e)}"
         )
 
-@user_router.get("/me", summary="Detalhes do Usuario Logado", response_model=UserDetail)
+@user_router.get("/me", summary="Detalhes do Usuario Logado", response_model=UserMe)
 async def get_me(user: User = Depends(get_current_user)):
-    return UserDetail.model_validate(user.model_dump())
+    return UserMe.model_validate(user.model_dump())
 
    
