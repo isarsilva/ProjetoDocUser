@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr, Field
 from uuid import UUID
 from typing import Optional
 class UserAuth(BaseModel):
-    username: str = Field(..., min_length=3, max_length=20, description="Nome de Usuário")
+    username: str = Field(..., min_length=3, max_length=100, description="Nome de Usuário")
     data_nascimento: str = Field(None, description="Data de Nascimento do Usuário")
     cpf: str= Field(None, min_length=11, max_length=11, description="CPF do Usuário")
     celular: str = Field(None, min_length=11, max_length=11, description="Celular do Usuário com DDD")
@@ -20,7 +20,16 @@ class UserDetail(BaseModel):
     last_name: Optional[str] = None         
     disabled: Optional[bool] = False
 
-    #criar uma outra classe para o detalhes do usuario neve vai ter o nome o email e o role
+class UserAtualiza(BaseModel):
+    username: Optional[str] = Field(default=None, min_length=3, max_length=100)
+    data_nascimento: Optional[str] = None  
+    cpf: Optional[str] = Field(default=None, min_length=11, max_length=11)
+    celular: Optional[str] = Field(default=None, min_length=11, max_length=11)
+    email: Optional[EmailStr] = None
+    password: Optional[str] = Field(default=None, min_length=8, max_length=20)
+
+
+   
 class UserMe(BaseModel):
     username: str
     email: EmailStr 

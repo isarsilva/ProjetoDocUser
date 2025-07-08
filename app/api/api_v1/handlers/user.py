@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from app.schemas.user_schemas import UserAuth, UserDetail, UserMe
+from app.schemas.user_schemas import UserAuth, UserDetail, UserMe, UserAtualiza
 from app.services.user_service import UserService
 import pymongo
 from beanie.exceptions import RevisionIdWasChanged 
@@ -28,8 +28,8 @@ async def adiciona_usuario(data: UserAuth):
             detail="Conflito: o documento foi alterado por outro processo. Atualize e tente novamente."
         )
 
-@user_router.put("update/{user_id}", summary="Atualiza um usuário", response_model=UserDetail)
-async def atualiza_usuario(user_id:str, data: UserAuth, user: User = Depends(get_current_user)):    
+@user_router.put("update/{user_id}", summary="Atualiza um usuário", response_model=UserAtualiza)
+async def atualiza_usuario(user_id:str, data: UserAtualiza, user: User = Depends(get_current_user)):    
     try:
         user_to_update = await UserService.get_user_by_id(user_id)
         if not user_to_update:
@@ -38,12 +38,18 @@ async def atualiza_usuario(user_id:str, data: UserAuth, user: User = Depends(get
                 detail="Usuário não encontrado"
             )
         
-        user_to_update.username = data.username
-        user_to_update.data_nascimento = data.data_nascimento
-        user_to_update.cpf = data.cpf
-        user_to_update.celular = data.celular
-        user_to_update.email = data.email
-        user_to_update.hash_password = UserService.get_password(data.password)
+        if data.username is not None:
+            user_to_update.username = data.username
+        if data.data_nascimento is not None:
+            user_to_update.data_nascimento = data.data_nascimento
+        if data.cpf is not None:
+            user_to_update.cpf = data.cpf
+        if data.celular is not None:
+            user_to_update.celular = data.celular
+        if data.email is not None:
+            user_to_update.email = data.email
+        if data.password is not None:
+            user_to_update.hash_password = UserService.get_password(data.password)
 
         await user_to_update.save()
         

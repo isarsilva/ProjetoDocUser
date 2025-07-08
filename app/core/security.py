@@ -3,6 +3,7 @@ from typing import Union, Any
 from datetime import datetime, timedelta
 from jose import jwt
 from app.core.config import settings  # Importando as configurações do projeto
+from datetime import timezone
 
 password_context = CryptContext( # para criar o contexto de criptografia
     schemes=["bcrypt"], 
@@ -16,7 +17,7 @@ def verify_password(password: str, hashed_password: str) -> bool: # para verific
     return password_context.verify(password, hashed_password)
 
 def create_access_token(subject: str, expires_delta: timedelta = timedelta(minutes=15)) -> str:
-    expire = datetime.utcnow() + expires_delta
+    expire = datetime.now(timezone.utc) + timedelta() + expires_delta
     info_jwt = {
         "sub": str(subject),
         "exp": int(expire.timestamp())  # <-- Corrigido aqui!
@@ -29,9 +30,9 @@ def create_access_token(subject: str, expires_delta: timedelta = timedelta(minut
     return jwt_encoded
 def create_refresh_token(subject: Union[str, Any], expires_delta:int =None) -> str:
     if expires_delta is not None:
-        expires_delta = datetime.utcnow() + expires_delta 
+        expire = datetime.now(timezone.utc) + timedelta() + expires_delta 
     else:
-        expires_delta= datetime.utcnow() + timedelta(
+        expire = datetime.now(timezone.utc) + timedelta() + timedelta(
         minutes=settings.REFRESH_TOKEN_EXPIRATION_MINUTES
     )
     info_jwt = {

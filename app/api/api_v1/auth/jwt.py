@@ -10,15 +10,17 @@ from pydantic import ValidationError
 from app.core.config import settings
 from app.schemas.auth_schema import TokenPayload
 from jose import jwt
+from fastapi.security import OAuth2PasswordRequestForm
+
 
 
 
 jwt_router = APIRouter()
 
 @jwt_router.post("/login", summary='Cria Access Token e Refresh Token', response_model=TokenSchemaWithRefresh)
-async def login(data: LoginRequest) -> Any:
+async def login(data: OAuth2PasswordRequestForm = Depends()) -> Any:
     usuario = await UserService.authenticate_user(
-        email=data.email,
+        email=data.username,  # Aqui o username será seu email
         password=data.password
     )
     
@@ -29,10 +31,11 @@ async def login(data: LoginRequest) -> Any:
         )
 
     return {
-        "access_token": create_access_token (usuario.id),
+        "access_token": create_access_token(usuario.id),
         "refresh_token": create_refresh_token(usuario.id),
         "token_type": "Bearer"
     }
+
 
 @jwt_router.post("/refresh-token", summary='Refresh token', response_model=TokenSchema)
 
