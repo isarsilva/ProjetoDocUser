@@ -1,4 +1,4 @@
-from app.schemas.user_schemas import UserAuth
+from app.schemas.user_schema import UserAuth
 from app.models.user_model import User
 from app.core.security import get_password, verify_password
 from typing import Optional

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from app.schemas.user_schemas import UserAuth, UserDetail, UserMe, UserAtualiza
+from app.schemas.user_schema import UserAuth, UserDetail, UserMe, UserAtualiza
 from app.services.user_service import UserService
 import pymongo
 from beanie.exceptions import RevisionIdWasChanged 
