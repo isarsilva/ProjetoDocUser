@@ -10,6 +10,10 @@ class UserService:
     @staticmethod
     async def create_user(user: UserAuth):
         usuario = User(
+            username=user.username,
+            data_nascimento=user.data_nascimento,
+            cpf=user.cpf,
+            celular=user.celular,
             email=user.email,
             hash_password=get_password(user.password)
         )

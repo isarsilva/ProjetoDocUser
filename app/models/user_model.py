@@ -6,6 +6,10 @@ from datetime import datetime
 
 class User(Document):
     id: Optional[ObjectId] = Field(default_factory=ObjectId, alias="_id")
+    username: str =None
+    data_nascimento: str = None
+    cpf: str = None   
+    celular:str = None
     email: EmailStr = Indexed(unique=True)
     hash_password: str
     first_name: Optional[str] = None
