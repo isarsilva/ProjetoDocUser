@@ -25,4 +25,3 @@ app.include_router(
     prefix=settings.API_V1_STR
 )
 
-#attach the settings to the app
